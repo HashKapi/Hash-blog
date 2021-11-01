@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import SubmitHandler from "../Smart Components/SubmitHandler";
 
 const Create = () => {
     const [title, setTitle] = useState('')
@@ -9,26 +10,10 @@ const Create = () => {
     
     const history = useHistory()
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        const newBlog = {title, body, author}
-
-        setIsPending(true)
-        fetch("http://localhost:8000/blogs", {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(newBlog)
-        }).then(() => {
-            console.log('Blog added')
-            setIsPending(false)
-            history.push('/')
-        })
-    }
-
     return (  
         <div className="create">
             <h2>Add a New Blog</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={e => SubmitHandler(e,history,title,body,author,setIsPending)}>
                 <label>Blog title:</label>
                 <input 
                     value={title}

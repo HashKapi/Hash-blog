@@ -1,21 +1,14 @@
-import { useHistory, useParams } from "react-router";
-import useFetch from "./useFetch";
+import { useParams } from "react-router";
+import useFetch from "../Smart Components/useFetch";
+import HandleClick from "../Smart Components/DeleteHandler";
+import { useHistory } from "react-router";
 
 const BlogDetails = () => {
     const {id} = useParams()
+    const url = "http://localhost:8000/blogs/"+id
 
-    const {data:blog, error, isPending} = useFetch("http://localhost:8000/blogs/"+id)
-
+    const {data:blog, error, isPending} = useFetch(url)
     const history = useHistory()
-
-    const handleClick = () => {
-        fetch("http://localhost:8000/blogs/"+id,{
-            method: 'DELETE'
-        }).then(() => {
-                    history.push('/')
-                } 
-        )
-    }
 
     return (  
         <div className="blog-details">
@@ -26,7 +19,7 @@ const BlogDetails = () => {
                     <h2>{blog.title}</h2>
                     <p>Written by {blog.author}</p>
                     <div>{blog.body}</div>
-                    <button onClick={handleClick}>delete</button>
+                    <button onClick={() => HandleClick(url, history)}>delete</button>
                 </article>
             }
         </div>
